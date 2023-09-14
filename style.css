@@ -1,0 +1,109 @@
+:root {
+  --timing: 600ms;
+  --rotation: 20deg;
+  --color: black;
+  --index: 100;
+}
+*,
+*::before,
+*::after {
+  margin: 0;
+}
+html {
+  color-scheme: dark;
+}
+body {
+  display: grid;
+  place-content: center;
+  min-height: 100vh;
+  background: #1d1d1d;
+  perspective: 1000px;
+}
+img {
+  max-width: 100%;
+}
+.thor {
+  width: 400px;
+  aspect-ratio: 9 / 16;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: rotate var(--timing) ease;
+
+  > * {
+    position: absolute;
+  }
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+  }
+
+  &:hover {
+    rotate: x var(--rotation);
+  }
+  &:hover::before {
+    opacity: 1;
+  }
+  &:hover::after,
+  &:hover .logo,
+  &:hover .hover {
+    rotate: x calc(var(--rotation) * -1);
+  }
+  &:hover::after {
+    translate: 0 90px;
+  }
+
+  &:hover .logo {
+    transform: translateY(-3rem) translateZ(20px);
+    filter: invert(1);
+  }
+
+  &:hover .hover {
+    opacity: 1;
+    transform: translateY(-3rem) translateZ(-10px);
+  }
+}
+.thor::before,
+.logo,
+.hover {
+  transition: var(--timing) ease;
+}
+.thor::before {
+  inset: 0;
+  z-index: var(--index);
+  background-image: radial-gradient(circle, transparent 10px, var(--color));
+  opacity: 0;
+}
+.thor::after {
+  inset: 80% 0.5rem 0.5rem;
+  translate: 0;
+  transform: translateZ(-100px);
+  background: var(--color);
+  filter: blur(2rem);
+  z-index: 1;
+  transition: rotate var(--timing) translate var(--timing);
+}
+
+.poster {
+  z-index: calc(var(--index) / 10);
+  height: 100%;
+  object-fit: cover;
+  object-position: -50px center;
+}
+
+.logo {
+  z-index: calc(var(--index) * 10);
+  width: 80%;
+  inset: auto 0 1rem;
+  margin-inline: auto;
+  transform: translateY(0rem) translateZ(20px);
+}
+
+.hover {
+  scale: 1.2;
+  transform-origin: bottom;
+  bottom: 0;
+  opacity: 0;
+  z-index: var(--index);
+}
